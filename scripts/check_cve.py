@@ -27,9 +27,9 @@ def get_github_client() -> Github:
     """
     Create and return a GitHub client using the GITHUB_TOKEN environment variable.
     """
-    github_token = os.environ.get("GITHUB_TOKEN")
+    github_token = os.environ.get("GH_TOKEN")
     if not github_token:
-        raise RuntimeError("GITHUB_TOKEN environment variable is not set")
+        raise RuntimeError("GH_TOKEN environment variable is not set")
     auth = Auth.Token(github_token)
     g = Github(auth=auth)
     return g
