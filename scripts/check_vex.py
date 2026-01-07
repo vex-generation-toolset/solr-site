@@ -23,9 +23,9 @@ def __has_open_pull_request(repo: str, cve: str) -> bool:
     """
     Check if there is an open pull request for the given CVE.
     """
-    github_token = os.environ.get("GITHUB_TOKEN")
+    github_token = os.environ.get("GH_TOKEN")
     if not github_token:
-        raise RuntimeError("GITHUB_TOKEN environment variable is not set")
+        raise RuntimeError("GH_TOKEN environment variable is not set")
 
     auth = Auth.Token(github_token)
     g = Github(auth=auth)
