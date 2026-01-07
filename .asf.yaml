@@ -1,0 +1,22 @@
+staging:
+  whoami: asf-staging
+
+github:
+  labels:
+    - apache
+    - solr
+    - website
+    - pelican
+  enabled_merge_buttons:
+    squash: true
+    merge:  true
+    rebase: false
+  protected_branches:
+    main: {}
+    production: {}
+
+notifications:
+  jobs:         builds@solr.apache.org
+  issues:       issues@solr.apache.org
+  pullrequests: issues@solr.apache.org
+  jira_options: link label worklog
