@@ -7,6 +7,8 @@ from cyclonedx.model.bom import Bom
 from packageurl import PackageURL
 from github import Auth, Github
 
+from check_vex import should_generate_vex
+
 BATCH_SIZE = 100
 
 class Advisory:
@@ -85,10 +87,23 @@ if __name__ == "__main__":
         print(f"SBOM file {sys.argv[1]} does not exist", file=sys.stderr)
         sys.exit(1)
 
-    with open(sys.argv[1], "rb") as f:
+    sbom_file = sys.argv[1]
+    with open(sbom_file, "rb") as f:
         data = f.read()
 
+    gh_repo = os.environ.get("GITHUB_REPOSITORY")
+    if not gh_repo:
+        print("GITHUB_REPOSITORY environment variable is not set", file=sys.stderr)
+        sys.exit(1)
     sbom: Bom = Bom.from_json(data=json.loads(data))
     advisories = list_advisories(sbom)
     for advisory in advisories:
-        print(advisory.to_json())
+        cve_id = advisory.cve_id
+        if should_generate_vex(gh_repo, cve_id) == 0:
+            # Inputs for the generate_vex workflow
+            inputs = {
+                "sbom_path": sbom_file,
+                "artifact_purl": advisory.purl.to_string(),
+                "cve_id": cve_id
+            }
+            print(json.dumps(inputs))
