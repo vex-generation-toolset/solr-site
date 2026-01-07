@@ -21,7 +21,7 @@ permissions: { }
 
 jobs:
   generate_vex:
-    name: Generate VEX for {{ inputs.cve_id }}
+    name: Generate VEX for ${{ inputs.cve_id }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -52,6 +52,7 @@ jobs:
       - name: Commit changes
         env:
           CVE_ID: ${{ github.event.inputs.cve_id }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
