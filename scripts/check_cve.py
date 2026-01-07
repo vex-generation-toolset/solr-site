@@ -102,7 +102,7 @@ if __name__ == "__main__":
         if should_generate_vex(gh_repo, cve_id) == 0:
             # Inputs for the generate_vex workflow
             inputs = {
-                "sbom_path": sbom_file,
+                "sbom_file": sbom_file,
                 "artifact_purl": advisory.purl.to_string(),
                 "cve_id": cve_id
             }
